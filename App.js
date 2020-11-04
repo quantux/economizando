@@ -7,8 +7,8 @@ import New from "./Pages/New/New";
 
 const AppNavigator = createStackNavigator({
 
-  Edit: Edit,
   Home: Home,
+  Edit: Edit,
   New: New,
 
 }, { headerMode: 'none' });
