@@ -8,16 +8,13 @@ export default class Input extends Component {
         super(props);
     }
 
-    onChangeText = () => {
-        console.log('Text changed!');
-    }
-
     render() {
         return(
             <TextInput
                 style={[styles.input, this.props.style]}
-                onChangeText={text => onChangeText(text)}
-                placeholder={this.props.placeholder} />
+                onChangeText={text => this.props.onChangeText(text)}
+                placeholder={this.props.placeholder}
+                value={this.props.value ? this.props.value : ''} />
         );
     }
 }

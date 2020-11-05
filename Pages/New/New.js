@@ -1,7 +1,8 @@
 import React, { Component } from 'react';
-import { Text, View } from 'react-native';
+import { Text, View, Alert } from 'react-native';
 import { Picker } from '@react-native-picker/picker';
 import { TouchableOpacity } from 'react-native-gesture-handler';
+import AsyncStorage from '@react-native-community/async-storage';
 
 import Header from '../../Components/Header/Header';
 import Input from '../../Components/Input/Input';
@@ -12,22 +13,79 @@ export default class New extends Component {
   constructor(props) {
     super(props);
 
+    // state inicial
     this.state = {
-      number: "1",
+      nome: '',
+      valor: '',
+      data: this.getDate(),
+      quantidade: "1",
     }
+
+    // bindings para passar o contexto this via props...
+    this.changeNome = this.changeNome.bind(this);
+    this.changeValor = this.changeValor.bind(this);
   }
 
+  // método para formatar a data como dia / mês
+  getDate() {
+    var today = new Date();
+    var dd = String(today.getDate()).padStart(2, '0');
+    var mm = String(today.getMonth() + 1).padStart(2, '0');
+
+    return dd + '/' + mm;
+  }
+
+  // Altera a quantidade no state
   changePickerValue = (value, index) => {
-    this.setState({ number: value });
-    console.log('new picker value, index: ', value, index);
+    this.setState({ quantidade: value });
   }
 
+  // Volta
   cancel = () => {
     this.props.navigation.navigate('Home');
   }
 
-  save = () => {
-    console.log('salvar!');
+  // Altera o nome no state
+  changeNome = text => {
+    this.setState({ nome: text });
+  }
+
+  // Altera o valor no state
+  changeValor = text => {
+    this.setState({ valor: text });
+  }
+
+  // se clicar em salvar, armazena o state no internal storage e volta para a Home
+  async save() {
+    const { nome, valor } = this.state;
+
+    // Verifica se adicionou nome e valor.
+    if( nome == '' || valor == '' ) {
+      Alert.alert('Adicione o nome e o valor.', 'Você precisa adicionar pelo menos um nome e um valor para continuar.');
+      return;
+    }
+
+    // gera um id único para o item.
+    var id = "id" + Math.random().toString(16).slice(2)
+
+    try {
+
+      // tenta salvar no internal storage.
+      await AsyncStorage.setItem(id, JSON.stringify(this.state));
+
+      // go home
+      this.props.navigation.navigate('Home');
+
+    } catch (e) {
+
+      // se erro, mostrar uma mensagem.
+      Alert.alert('Ocorreu um erro.', 'Tente novamente mais tarde.');
+
+      // mostrar erro no console ( Remover em produção? Mas é claro que não! )
+      // ;)
+      console.log('Error! ', e);
+
+    }
   }
 
   render() {
@@ -38,13 +96,23 @@ export default class New extends Component {
         <View style={styles.box}>
           <Text style={styles.title}>NOVA DESPESA</Text>
 
-          <Input style={{}} placeholder="Nome da despesa" />
+          {/* Input nome da despesa */}
+          <Input 
+            style={{}}
+            onChangeText={this.changeNome}
+            placeholder="Nome da despesa" />
 
           <View style={styles.down_inputs}>
-            <Input style={{ width: '72%' }} placeholder="Valor da despesa" />
+
+            {/* Input valor da despesa */}
+            <Input
+              style={{ width: '72%' }}
+              onChangeText={this.changeValor}
+              placeholder="Valor (Exemplo: 99,99)" />
             
+            {/* Input (Picker) de select/option para selecionar a quantidade de itens */}
             <Picker
-              selectedValue={this.state.number}
+              selectedValue={this.state.quantidade}
               style={styles.picker}
               onValueChange={(itemValue, itemIndex) => 
                 this.changePickerValue(itemValue, itemIndex)
@@ -64,6 +132,7 @@ export default class New extends Component {
 
           </View>
 
+          {/* Botões de Cancelar e Salvar em TouchableOpacity */}
           <View style={styles.buttons}>
             <TouchableOpacity
               onPress={() => this.cancel()}
@@ -79,6 +148,7 @@ export default class New extends Component {
               <Text>SALVAR</Text>
             </TouchableOpacity>
           </View>
+
         </View>
       </View>
     );
