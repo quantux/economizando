@@ -99,6 +99,7 @@ export default class New extends Component {
           {/* Input nome da despesa */}
           <Input 
             style={{}}
+            value={this.state.nome}
             onChangeText={this.changeNome}
             placeholder="Nome da despesa" />
 
@@ -107,6 +108,7 @@ export default class New extends Component {
             {/* Input valor da despesa */}
             <Input
               style={{ width: '72%' }}
+              value={this.state.valor}
               onChangeText={this.changeValor}
               placeholder="Valor (Exemplo: 99,99)" />
             
