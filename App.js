@@ -7,8 +7,10 @@ import Home from "./Pages/Home/Home";
 import Edit from "./Pages/Edit/Edit";
 import New from "./Pages/New/New";
 
+/* Cria a pilha de navegação */
 const Stack = createStackNavigator();
 
+/* Carrega as páginas Home, Edit, New na pilha */
 const App = () => {
   return (
     <NavigationContainer>

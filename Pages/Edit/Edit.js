@@ -118,6 +118,8 @@ export default class Edit extends Component {
   }
 
   render() {
+
+    // destruct no state
     const { nome, valor, quantidade } = this.state;
 
     return (
@@ -127,6 +129,7 @@ export default class Edit extends Component {
         <View style={styles.box}>
           <Text style={styles.title}>EDITAR DESPESA</Text>
 
+          {/* Inputs para edição */}
           <Input
             style={{}}
             value={nome}
@@ -161,6 +164,7 @@ export default class Edit extends Component {
 
           </View>
 
+          {/* Botões de cancelar */}
           <View style={styles.buttons}>
             <TouchableOpacity
               onPress={() => this.cancel()}

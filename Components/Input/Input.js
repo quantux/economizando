@@ -3,6 +3,8 @@ import { Text, View, Image, ScrollView, TextInput } from 'react-native';
 
 import styles from './styles';
 
+
+/* Componente Input */
 export default class Input extends Component {
     constructor(props) {
         super(props);
