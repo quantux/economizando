@@ -23,7 +23,7 @@ export default class Home extends Component {
     goTo = ( page, itemId = false ) => {
 
       if(!itemId)
-        this.props.navigation.navigate( page );
+        this.props.navigation.navigate( page, { 'populateItems': this.populateItems } );
       else
         this.props.navigation.navigate( page, { 'itemId': itemId, 'populateItems': this.populateItems } );
 

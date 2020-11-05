@@ -73,6 +73,9 @@ export default class New extends Component {
       // tenta salvar no internal storage.
       await AsyncStorage.setItem(id, JSON.stringify(this.state));
 
+      // atualiza a Home através de uma função passada via routes.
+      this.props.route.params.populateItems();
+
       // go home
       this.props.navigation.navigate('Home');
 
